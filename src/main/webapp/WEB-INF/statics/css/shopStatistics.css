@@ -1,0 +1,7 @@
+.tab_shopOrder{
+    position: relative;
+    border: 1px darkgrey solid;
+    border-radius: 6px;
+    padding: 6px;
+    margin: 10px;
+}

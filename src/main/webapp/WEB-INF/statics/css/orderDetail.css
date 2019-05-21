@@ -1,0 +1,9 @@
+.table.table_orderItem td{
+    vertical-align: middle;
+}
+.td_img{
+    width: 70px;
+}
+.td_img .thumbnail{
+    margin-bottom: 0;
+}

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <context:component-scan base-package="edu.nju.yummy" />
+
+    <!--&lt;!&ndash; don't handle the static resource &ndash;&gt;-->
+    <!--<mvc:default-servlet-handler />-->
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!--启用spring的一些annotation -->
+    <context:annotation-config/>
+
+    <!-- 配置注解驱动 可以将request参数与绑定到controller参数上 -->
+    <mvc:annotation-driven/>
+
+    <!--静态资源映射-->
+    <!--本项目把静态资源放在了webapp的statics目录下，资源映射如下-->
+    <mvc:resources mapping="/css/**" location="/WEB-INF/statics/css/"/>
+    <mvc:resources mapping="/js/**" location="/WEB-INF/statics/js/"/>
+    <mvc:resources mapping="/image/**" location="/WEB-INF/statics/image/"/>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/user/**" />
+            <!--拦截的信息-->
+            <mvc:exclude-mapping path="/user/login"/>
+            <mvc:exclude-mapping path="/user/register"/>
+            <mvc:exclude-mapping path="/user/verify"/>
+            <!--拦截器所在的包下-->
+            <bean id="userInterceptor" class="edu.nju.yummy.interceptor.UserInterceptor" />
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/shop/**" />
+            <!--拦截的信息-->
+            <mvc:exclude-mapping path="/shop/login"/>
+            <mvc:exclude-mapping path="/shop/register"/>
+            <!--拦截器所在的包下-->
+            <bean id="shopInterceptor" class="edu.nju.yummy.interceptor.ShopInterceptor" />
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/**" />
+            <!--拦截的信息-->
+            <mvc:exclude-mapping path="/admin/login"/>
+            <!--拦截器所在的包下-->
+            <bean id="adminInterceptor" class="edu.nju.yummy.interceptor.AdminInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <task:annotation-driven/>
+</beans>
